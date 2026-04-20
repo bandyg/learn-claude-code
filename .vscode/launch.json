@@ -1,0 +1,185 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug agents/s01_handw.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s01_handw.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s02_tool_use.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s02_tool_use.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s03_todo_write.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s03_todo_write.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s04_subagent.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s04_subagent.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s05_skill_loading.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s05_skill_loading.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s06_context_compact.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s06_context_compact.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s07_permission_system.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s07_permission_system.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s08_hook_system.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s08_hook_system.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s09_memory_system.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s09_memory_system.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s10_system_prompt.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s10_system_prompt.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s11_error_recovery.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s11_error_recovery.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s12_task_system.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s12_task_system.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s13_background_tasks.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s13_background_tasks.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s14_cron_scheduler.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s14_cron_scheduler.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s15_agent_teams.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s15_agent_teams.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s16_team_protocols.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s16_team_protocols.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s17_autonomous_agents.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s17_autonomous_agents.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s18_worktree_task_isolation.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s18_worktree_task_isolation.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s19_mcp_plugin.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s19_mcp_plugin.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s_full.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s_full.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
