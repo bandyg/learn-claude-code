@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug agents/s01_ollama1.py",
+            "name": "Debug agents/s01_ollama2.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}\\agents\\s01_ollama1.py",
+            "program": "${workspaceFolder}\\agents\\s01_ollama2.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "${workspaceFolder}"

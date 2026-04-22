@@ -34,8 +34,8 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 
 # === SECTION: Ollama configuration ===
-OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://192.168.1.99:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "ministral-3:14b")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "")
 
 SYSTEM = (
     f"You are a coding agent help to review code ")
