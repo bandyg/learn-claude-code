@@ -222,6 +222,12 @@ web/out/
 .env*.local
 test_providers.py
 
+# Agents (TypeScript)
+agents/node_modules/
+agents/dist/
+agents/.tsbuildinfo
+agents/package-lock.json
+
 # Internal analysis artifacts (not learning material)
 analysis/
 analysis_progress.md
