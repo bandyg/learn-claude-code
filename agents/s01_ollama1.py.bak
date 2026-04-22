@@ -38,10 +38,7 @@ OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://192.168.1.99:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "ministral-3:14b")
 
 SYSTEM = (
-    f"You are a coding agent at {os.getcwd()} on Windows. "
-    "IMPORTANT: Use Windows commands (dir, cd, type, del, copy, etc.), NOT Linux commands (ls, pwd, cat, rm, etc.). "
-    "The workspace is D:\\projects\\learn-claude-code. Act first, then report clearly."
-)
+    f"You are a coding agent help to review code ")
 
 # === SECTION: Ollama API ===
 def ollama_chat(model: str, messages: list, tools: list = None, timeout: int = 300) -> dict:
@@ -111,6 +108,45 @@ def run_bash(command: str) -> str:
     return output[:50000] if output else "(no output)"
 
 
+def extract_tool_calls_from_content(content: str) -> list | None:
+    """Fallback: try to parse a JSON tool call from plain text content."""
+    import re
+    # Look for JSON object that looks like a tool call: {"name": "...", "arguments": {...}}
+    # Also handles wrapped in markdown code blocks
+    match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', content, re.DOTALL)
+    if not match:
+        match = re.search(r'\{[^{}]*"name"[^{}]*"arguments"[^{}]*\}', content, re.DOTALL)
+    if not match:
+        # Try simpler pattern for compact JSON
+        try:
+            # Look for first { ... } block
+            start = content.find('{')
+            end = content.rfind('}') + 1
+            if start != -1 and end > start:
+                parsed = json.loads(content[start:end])
+                if "name" in parsed and "arguments" in parsed:
+                    match = type('obj', (object,), {'group': lambda: content[start:end]})()
+                    match.lastindex = 1
+        except:
+            pass
+    if not match:
+        return None
+    try:
+        json_str = match.group(1) if match.lastindex else match.group()
+        parsed = json.loads(json_str)
+        if isinstance(parsed, dict) and "name" in parsed and "arguments" in parsed:
+            return [{
+                "function": {
+                    "name": parsed["name"],
+                    "arguments": parsed["arguments"] if isinstance(parsed["arguments"], dict) else json.loads(parsed["arguments"]) if isinstance(parsed["arguments"], str) else {}
+                },
+                "id": f"auto-{hash(json_str) % 100000}"
+            }]
+    except:
+        pass
+    return None
+
+
 def execute_tool_calls(tool_calls: list) -> list:
     """Execute tool calls and return results in Ollama format."""
     results = []
@@ -165,6 +201,14 @@ def run_one_turn(state: LoopState) -> bool:
 
     # Check if model called tools
     tool_calls = assistant_msg.get("tool_calls", [])
+
+    # Fallback: if no tool_calls but content looks like JSON tool call, parse it
+    if not tool_calls:
+        content = assistant_msg.get("content", "")
+        if content and content.strip().startswith(("{", "```json")):
+            parsed = extract_tool_calls_from_content(content)
+            if parsed:
+                tool_calls = parsed
 
     if not tool_calls:
         state.transition_reason = None
