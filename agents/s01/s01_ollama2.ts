@@ -64,9 +64,15 @@ CRITICAL RULES (MUST FOLLOW):
 2. List files: bash '${IS_WINDOWS ? "dir" : "ls -la"}'
 3. Read file: bash '${IS_WINDOWS ? "type filename" : "cat filename"}'
 4. Check dir: bash '${IS_WINDOWS ? "dir /s" : "find . -type f"}'
-5. Should pass back the tool_call name in the result.
 
-NEVER say "I don't have access". ALWAYS use tools.`;
+IMPORTANT: When calling the bash tool, you MUST respond with a valid JSON object like:
+{"command": "ls -la"}
+or
+{"cmd": ["ls", "-la"]}
+
+NEVER send bare strings or malformed JSON like {"dir","agents/s01"}.
+
+ALWAYS use tools when asked to perform file operations.`;
 
 // === Anthropic 客户端 (兼容 Ollama API) ===
 const TOOLS: ToolDefinition[] = [
@@ -219,15 +225,25 @@ async function executeToolsAsync(toolCalls: AnthropicContentBlock[]): Promise<To
       const args = toolCall.input ?? {};
 
       let command = "";
-      if ("command" in args && args.command !== undefined) {
+      if ("command" in args && typeof args.command === "string") {
         command = args.command;
-      } else if ("cmd" in args && args.cmd !== undefined) {
+      } else if ("cmd" in args) {
         const cmdVal = args.cmd;
         if (Array.isArray(cmdVal)) {
           command = cmdVal.map((c) => String(c)).join(" ");
-        } else {
-          command = String(cmdVal);
+        } else if (typeof cmdVal === "string") {
+          command = cmdVal;
         }
+      }
+
+      // Validate command is a non-empty string before executing
+      if (!command || typeof command !== "string" || command.trim() === "") {
+        results.push({
+          type: "tool_result",
+          tool_use_id: toolCall.id ?? `call_${Date.now()}`,
+          content: "❌ Error: Empty or invalid command",
+        });
+        continue;
       }
 
       command = command.trim();
