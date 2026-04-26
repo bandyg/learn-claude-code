@@ -16,6 +16,7 @@ from pathlib import Path
 
 from anthropic import Anthropic
 from dotenv import load_dotenv
+import platform
 
 load_dotenv(override=True)
 
@@ -25,8 +26,12 @@ if os.getenv("ANTHROPIC_BASE_URL"):
 WORKDIR = Path.cwd()
 client = Anthropic(base_url=os.getenv("ANTHROPIC_BASE_URL"))
 MODEL = os.environ["MODEL_ID"]
+IS_WINDOWS = platform.system() == "Windows"
 
-SYSTEM = f"You are a coding agent at {WORKDIR}. Use tools to solve tasks. Act, don't explain."
+SYSTEM = f"""You are a coding agent at Environment:
+- OS: {'Windows PowerShell' if IS_WINDOWS else 'Linux/macOS shell'}
+- Working directory: {WORKDIR}. 
+Use tools to solve tasks. Act, don't explain."""
 
 
 def safe_path(p: str) -> Path:
@@ -43,7 +48,9 @@ def run_bash(command: str) -> str:
     try:
         r = subprocess.run(command, shell=True, cwd=WORKDIR,
                            capture_output=True, text=True, timeout=120)
-        out = (r.stdout + r.stderr).strip()
+        stdout = r.stdout or ""
+        stderr = r.stderr or ""
+        out = (stdout + stderr).strip()
         return out[:50000] if out else "(no output)"
     except subprocess.TimeoutExpired:
         return "Error: Timeout (120s)"
@@ -115,18 +122,35 @@ def normalize_messages(messages: list) -> list:
     2. Ensure every tool_use has a matching tool_result (insert placeholder if missing)
     3. Merge consecutive same-role messages (API requires strict alternation)
     """
+    def block_to_dict(block) -> dict | None:
+        if isinstance(block, dict):
+            raw = block
+        elif hasattr(block, "model_dump"):
+            raw = block.model_dump()
+        elif hasattr(block, "to_dict"):
+            raw = block.to_dict()
+        else:
+            # Handle Anthropic SDK block objects (TextBlock, ToolUseBlock, etc.)
+            raw = {}
+            for key in ("type", "id", "name", "input", "text", "tool_use_id", "content"):
+                if hasattr(block, key):
+                    raw[key] = getattr(block, key)
+        if not isinstance(raw, dict):
+            return None
+        return {k: v for k, v in raw.items() if not str(k).startswith("_")}
+
     cleaned = []
     for msg in messages:
         clean = {"role": msg["role"]}
         if isinstance(msg.get("content"), str):
             clean["content"] = msg["content"]
         elif isinstance(msg.get("content"), list):
-            clean["content"] = [
-                {k: v for k, v in block.items()
-                 if not k.startswith("_")}
-                for block in msg["content"]
-                if isinstance(block, dict)
-            ]
+            normalized_blocks = []
+            for block in msg["content"]:
+                converted = block_to_dict(block)
+                if converted is not None:
+                    normalized_blocks.append(converted)
+            clean["content"] = normalized_blocks
         else:
             clean["content"] = msg.get("content", "")
         cleaned.append(clean)

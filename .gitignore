@@ -232,3 +232,6 @@ test_providers.py
 analysis/
 analysis_progress.md
 .tool_outputs
+**/diff
+.trae/
+openspec

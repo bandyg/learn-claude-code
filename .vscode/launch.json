@@ -2,7 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug agents/s01_ollama2.ts",
+            "name": "Debug agents/s02_handwrite.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s02\\s02_handwrite.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s01_ollama2.py",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}\\agents\\s01\\s01_ollama2.py",
@@ -14,7 +23,16 @@
             "name": "Debug agents/s02_tool_use.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}\\agents\\s02_tool_use.py",
+            "program": "${workspaceFolder}\\agents\\s02\\s02_tool_use.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug agents/s02_ollama2.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\agents\\s02\\s02_ollama2.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "${workspaceFolder}"

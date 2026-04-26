@@ -203,6 +203,91 @@ Suggested order:
 3. Only after the single-agent core plus its control plane feel stable, continue into `s12 -> s19`.
 4. Read `s_full.py` last, after the mechanisms already make sense separately.
 
+## s02 HTTP Service
+
+`agents/s02/agent_service.py` wraps `s02_handwrite.py` into an independently deployable HTTP service.
+
+### Start Command
+
+```sh
+pip install -r requirements.txt
+python agents/s02/agent_service.py
+```
+
+Default bind: `0.0.0.0:8000`
+
+Optional environment variables:
+
+- `SERVICE_HOST` (default `0.0.0.0`)
+- `SERVICE_PORT` (default `8000`)
+- `SESSION_TTL_SEC` (default `1800`)
+- `SESSION_MAX_ITEMS` (default `1024`)
+- `SESSION_CLEANUP_INTERVAL_SEC` (default `30`)
+
+### API: POST /chat
+
+Request JSON:
+
+```json
+{
+  "user_id": "u1",
+  "session_id": "s1",
+  "message": "帮我看一下这个项目结构"
+}
+```
+
+Response JSON:
+
+```json
+{
+  "status": "ok",
+  "session_status": "ACTIVE",
+  "user_id": "u1",
+  "session_id": "s1",
+  "reply": "...",
+  "metrics": {
+    "llm_calls": 1,
+    "tool_calls": 1
+  }
+}
+```
+
+### API: POST /new
+
+Purpose: clear current session context (history/entities/temp state) and return a new `session_id`.
+
+Request JSON:
+
+```json
+{
+  "user_id": "u1",
+  "session_id": "s1"
+}
+```
+
+Response JSON:
+
+```json
+{
+  "status": "reset_ok",
+  "session_id": "4b0f3d22-4f0f-4dc6-8449-09e7b798d62f"
+}
+```
+
+### curl Examples
+
+```sh
+curl -X POST http://127.0.0.1:8000/chat \
+  -H "Content-Type: application/json" \
+  -d "{\"user_id\":\"u1\",\"session_id\":\"s1\",\"message\":\"hello\"}"
+```
+
+```sh
+curl -X POST http://127.0.0.1:8000/new \
+  -H "Content-Type: application/json" \
+  -d "{\"user_id\":\"u1\",\"session_id\":\"s1\"}"
+```
+
 ## How To Read Each Chapter
 
 Each chapter is easier to absorb if you keep the same reading rhythm:
